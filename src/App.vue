@@ -1,9 +1,17 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
   <div class="wrapper">
-    <HelloWorld msg="You did it!" />
+    <h1 class="m-5 text-center text-6xl">Hello</h1>
+    <MainNav />
   </div>
 </template>
+
+<script>
+import MainNav from '@/components/MainNav.vue'
+
+export default {
+  name: 'App',
+  components: {
+    MainNav,
+  },
+}
+</script>
