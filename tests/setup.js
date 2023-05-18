@@ -6,5 +6,5 @@ expect.extend(matchers)
 
 // This will run after every test is executed
 afterEach(() => {
-  cleanup()
+  cleanup() // Remove component from Virtual DOM and delete Virtual DOM, clan everything to prevent cross test pollution
 })

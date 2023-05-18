@@ -15,11 +15,11 @@ describe('basic math', () => {
       })
     })
 
-    // describe('wen number is odd', () => {
-    //   it('indicates the number is odd', () => {
-    //     expect(evenOrOdd(7)).toBe('Odd')
-    //   })
-    // })
+    describe('wen number is odd', () => {
+      it('indicates the number is odd', () => {
+        expect(evenOrOdd(7)).toBe('Odd')
+      })
+    })
   })
 })
 
