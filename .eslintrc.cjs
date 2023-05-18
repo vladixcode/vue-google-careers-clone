@@ -9,8 +9,12 @@ module.exports = {
     'eslint:recommended',
     // '@vue/eslint-config-prettier/skip-formatting',
     '@vue/eslint-config-prettier',
+    'plugin:vitest-globals/recommended',
   ],
   parserOptions: {
     ecmaVersion: 'latest',
+  },
+  env: {
+    'vitest-globals/env': true,
   },
 }

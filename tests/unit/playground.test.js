@@ -1,4 +1,5 @@
-import { describe, it, expect } from 'vitest'
+// * Thise functions are set globally
+// import { describe, it, expect } from 'vitest'
 
 import { evenOrOdd } from '@/playground.js'
 
@@ -14,16 +15,16 @@ describe('basic math', () => {
       })
     })
 
-    describe('wen number is odd', () => {
-      it('indicates the number is odd', () => {
-        expect(evenOrOdd(7)).toBe('Odd')
-      })
-    })
+    // describe('wen number is odd', () => {
+    //   it('indicates the number is odd', () => {
+    //     expect(evenOrOdd(7)).toBe('Odd')
+    //   })
+    // })
   })
 })
 
-describe('another top level describe in file', () => {
-  it('subtracting two numbers', () => {
-    expect(1 - 1).toBe(0)
-  })
-})
+// describe('another top level describe in file', () => {
+//   it('subtracting two numbers', () => {
+//     expect(1 - 1).toBe(0)
+//   })
+// })
