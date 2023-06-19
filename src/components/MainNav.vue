@@ -5,14 +5,20 @@
         <a :href="url" class="flex h-full items-center text-xl">{{ company }}</a>
         <nav class="ml-12 h-full">
           <ul class="flex h-full list-none">
-            <li class="ml-9 h-full first:ml-0" v-for="menuItem in menuItems" :key="menuItem">
+            <li v-for="menuItem in menuItems" :key="menuItem" class="ml-9 h-full first:ml-0">
               <a href="" class="flex h-full items-center py-2.5">{{ menuItem }}</a>
             </li>
           </ul>
         </nav>
         <div class="ml-auto flex h-full items-center">
           <ProfileImage v-if="isLoggedIn" />
-          <ActionButton text="Sign in" v-else @click="loginUser" />
+          <ActionButton
+            v-else
+            text="Sign in"
+            tuype="primary"
+            :is-primary="false"
+            @click="loginUser"
+          />
         </div>
       </div>
     </div>
