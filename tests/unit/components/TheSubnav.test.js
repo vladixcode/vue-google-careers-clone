@@ -8,7 +8,7 @@ describe('TheSubnav', () => {
       render(TheSubnav, {
         data() {
           return {
-            onJobResultPage: true,
+            onJobResultsPage: true,
           }
         },
       })
@@ -19,14 +19,17 @@ describe('TheSubnav', () => {
 
   describe('when user is not on jobs page', () => {
     it('does NOT display job count', () => {
+      // ! This test is not the best since it is not interacting with component in a way that the user will
+      // ! This test knows a little too much about the implementation and the specifics of the component
+      // The way to properly test this is to have router and to use the user click event etc
       render(TheSubnav, {
         data() {
           return {
-            onJobResultPage: false,
+            onJobResultsPage: false,
           }
         },
       })
-      const jobCount = screen.gueryByText('42')
+      const jobCount = screen.queryByText('42')
       expect(jobCount).not.toBeInTheDocument()
     })
   })
