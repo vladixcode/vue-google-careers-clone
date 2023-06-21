@@ -6,12 +6,18 @@ describe('TheSubnav', () => {
   describe('when user is on jobs page', () => {
     it('displays job count', () => {
       render(TheSubnav, {
+        global: {
+          stubs: {
+            FontAwesomeIcon: true,
+          },
+        },
         data() {
           return {
             onJobResultsPage: true,
           }
         },
       })
+      // screen.debug()
       const jobCount = screen.getByText('42')
       expect(jobCount).toBeInTheDocument()
     })
@@ -23,6 +29,11 @@ describe('TheSubnav', () => {
       // ! This test knows a little too much about the implementation and the specifics of the component
       // The way to properly test this is to have router and to use the user click event etc
       render(TheSubnav, {
+        global: {
+          stubs: {
+            FontAwesomeIcon: true,
+          },
+        },
         data() {
           return {
             onJobResultsPage: false,

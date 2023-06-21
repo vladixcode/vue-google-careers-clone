@@ -6,8 +6,14 @@ import MainNav from '@/components/MainNav.vue'
 
 describe('MainNav', () => {
   it('displays company name', () => {
-    render(MainNav)
-    screen.debug()
+    render(MainNav, {
+      global: {
+        stubs: {
+          FontAwesomeIcon: true,
+        },
+      },
+    })
+    // screen.debug()
     const companyName = screen.getByText('Bobo careers')
     expect(companyName).toBeInTheDocument()
   })
@@ -17,11 +23,17 @@ describe('MainNav', () => {
    * If we would follow TDD approach this would be the test we would write
    */
   it('displays manu items for navigation', () => {
-    render(MainNav)
+    render(MainNav, {
+      global: {
+        stubs: {
+          FontAwesomeIcon: true,
+        },
+      },
+    })
     // screen.getByRole('listitem')
     const navigationMenuItems = screen.getAllByRole('listitem')
     const navigationMenuTexts = navigationMenuItems.map((item) => item.textContent)
-    console.log(navigationMenuTexts)
+    // console.log(navigationMenuTexts)
     // expect(navigationMenuTexts).toBe()
     expect(navigationMenuTexts).toEqual([
       'Teams',
@@ -36,7 +48,13 @@ describe('MainNav', () => {
   describe('when the user logs in', () => {
     it('displayes user profile picture', async () => {
       // write all test assertions
-      render(MainNav)
+      render(MainNav, {
+        global: {
+          stubs: {
+            FontAwesomeIcon: true,
+          },
+        },
+      })
 
       // screen.getByRole('img')
       let profileImage = screen.queryByRole('img', {
