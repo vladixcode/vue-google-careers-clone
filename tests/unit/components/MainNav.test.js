@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event'
 import MainNav from '@/components/MainNav.vue'
 
 describe('MainNav', () => {
-  it('displays company name', () => {
+  const renderMainNav = () => {
     render(MainNav, {
       global: {
         stubs: {
@@ -13,6 +13,9 @@ describe('MainNav', () => {
         },
       },
     })
+  }
+  it('displays company name', () => {
+    renderMainNav()
     // screen.debug()
     const companyName = screen.getByText('Bobo careers')
     expect(companyName).toBeInTheDocument()
@@ -23,13 +26,7 @@ describe('MainNav', () => {
    * If we would follow TDD approach this would be the test we would write
    */
   it('displays manu items for navigation', () => {
-    render(MainNav, {
-      global: {
-        stubs: {
-          FontAwesomeIcon: true,
-        },
-      },
-    })
+    renderMainNav()
     // screen.getByRole('listitem')
     const navigationMenuItems = screen.getAllByRole('listitem')
     const navigationMenuTexts = navigationMenuItems.map((item) => item.textContent)
@@ -48,13 +45,7 @@ describe('MainNav', () => {
   describe('when the user logs in', () => {
     it('displayes user profile picture', async () => {
       // write all test assertions
-      render(MainNav, {
-        global: {
-          stubs: {
-            FontAwesomeIcon: true,
-          },
-        },
-      })
+      renderMainNav()
 
       // screen.getByRole('img')
       let profileImage = screen.queryByRole('img', {
