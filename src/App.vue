@@ -1,17 +1,17 @@
 <template>
-  <div class="wrapper">
-    <h1 class="m-5 text-center text-6xl">Hello</h1>
-    <MainNav />
-  </div>
+  <main-nav />
+  <the-hero />
 </template>
 
 <script>
 import MainNav from '@/components/MainNav.vue'
+import TheHero from '@/components/TheHero.vue'
 
 export default {
   name: 'App',
   components: {
     MainNav,
+    TheHero,
   },
 }
 </script>
