@@ -8,24 +8,36 @@ vi.mock('axios')
 import JobsListings from '@/components/JobResults/JobListings.vue'
 
 describe('JobListings', () => {
-  it('fetches jobs', () => {
-    axios.get.mockResolvedValue({ data: [] })
-    render(JobsListings)
+  // Factory function
+  const createRoute = (queryParams = {}) => ({ query: { page: '5', ...queryParams } })
 
-    expect(axios.get).toHaveBeenCalledWith('http://localhost:3000/jobs')
-  })
-
-  it('creates a job listing for every job', async () => {
-    axios.get.mockResolvedValue({ data: Array(15).fill({}) })
+  // Helper function
+  const renderJobListings = ($route) => {
     render(JobsListings, {
       global: {
+        mocks: {
+          $route,
+        },
         stubs: {
           RouterLink: RouterLinkStub,
         },
       },
     })
+  }
+
+  it('fetches jobs', () => {
+    axios.get.mockResolvedValue({ data: [] })
+    renderJobListings(createRoute())
+
+    expect(axios.get).toHaveBeenCalledWith('http://localhost:3000/jobs')
+  })
+
+  it('displayes maximum of 10 jobs', async () => {
+    axios.get.mockResolvedValue({ data: Array(15).fill({}) })
+
+    renderJobListings(createRoute({ page: '1' }))
 
     const jobListings = await screen.findAllByRole('listitem')
-    expect(jobListings).toHaveLength(15)
+    expect(jobListings).toHaveLength(10)
   })
 })
