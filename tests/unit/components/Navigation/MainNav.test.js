@@ -1,17 +1,24 @@
 import { render, screen } from '@testing-library/vue'
 import userEvent from '@testing-library/user-event'
 import { RouterLinkStub } from '@vue/test-utils'
+import { createTestingPinia } from '@pinia/testing'
 
 // Component is the default export of the file
 import MainNav from '@/components/Navigation/MainNav.vue'
+import { useUserStore } from '@/stores/user'
 
 describe('MainNav', () => {
   const renderMainNav = () => {
+    // Use store without mocking its state and actions if you prefer integration tests to test component & store
+    // const pinia = createTestingPinia({ stubActions: false }) // Real world implementation with no mocks of store actions etc
+    const pinia = createTestingPinia() // Default and prefered way with mocking
+
     const $route = {
       name: 'Home',
     }
     render(MainNav, {
       global: {
+        plugins: [pinia],
         mocks: {
           $route,
         },
@@ -54,6 +61,7 @@ describe('MainNav', () => {
     it('displayes user profile picture', async () => {
       // write all test assertions
       renderMainNav()
+      const userStore = useUserStore()
 
       // screen.getByRole('img')
       let profileImage = screen.queryByRole('img', {
@@ -65,6 +73,10 @@ describe('MainNav', () => {
         name: /sign in/i,
       })
 
+      // We are focused on testing the component rather than the store
+      // This is a user test for MainNav component and its responsibility
+      // Simulate expected result of pinia action
+      userStore.isLoggedIn = true
       await userEvent.click(loginButton)
 
       // By this point our ProfileImage should exist
