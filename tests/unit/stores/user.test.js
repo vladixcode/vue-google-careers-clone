@@ -1,6 +1,6 @@
 import { createPinia, setActivePinia } from 'pinia'
 
-import { useUserStore } from '@/stores/user'
+import { useUserStore, LOGIN_USER } from '@/stores/user'
 
 beforeEach(() => {
   setActivePinia(createPinia())
@@ -16,7 +16,7 @@ describe('user inital state', () => {
 describe('actions', () => {
   it('logs the user in', () => {
     const store = useUserStore()
-    store.loginUser()
+    store[LOGIN_USER]()
     expect(store.isLoggedIn).toBe(true)
   })
 })
