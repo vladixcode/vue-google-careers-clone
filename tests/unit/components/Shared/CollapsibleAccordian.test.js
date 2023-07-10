@@ -29,4 +29,27 @@ describe('CollapsibleAccordian', () => {
 
     expect(screen.queryByText('my nested child')).toBeInTheDocument()
   })
+
+  describe('when parent does not provide custom child content', () => {
+    it('renders default content', async () => {
+      render(CollapsibleAccordion, {
+        global: {
+          stubs: {
+            FontAwesomeIcon: true,
+          },
+        },
+        props: {
+          header: 'my category',
+        },
+      })
+
+      const button = screen.getByRole('button', {
+        name: /my category/i,
+      })
+
+      await userEvent.click(button)
+
+      expect(screen.queryByText(/Default or fallback slot HTML content/i)).toBeInTheDocument()
+    })
+  })
 })
