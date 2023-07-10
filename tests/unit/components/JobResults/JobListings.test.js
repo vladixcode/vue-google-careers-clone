@@ -1,20 +1,25 @@
 import { render, screen } from '@testing-library/vue'
 import { RouterLinkStub } from '@vue/test-utils'
+import { createTestingPinia } from '@pinia/testing'
 
-import axios from 'axios'
+// import axios from 'axios'
 
-vi.mock('axios')
+// vi.mock('axios')
 
 import JobsListings from '@/components/JobResults/JobListings.vue'
+import { useJobsStore, FETCH_JOBS } from '@/stores/jobs'
 
 describe('JobListings', () => {
   // Factory function
   const createRoute = (queryParams = {}) => ({ query: { page: '5', ...queryParams } })
 
+  const pinia = createTestingPinia()
+
   // Helper function
   const renderJobListings = ($route) => {
     render(JobsListings, {
       global: {
+        plugins: [pinia],
         mocks: {
           $route,
         },
@@ -26,16 +31,22 @@ describe('JobListings', () => {
   }
 
   it('fetches jobs', () => {
-    axios.get.mockResolvedValue({ data: [] })
     renderJobListings(createRoute())
 
-    expect(axios.get).toHaveBeenCalledWith('http://localhost:3000/jobs')
+    const jobStore = useJobsStore()
+
+    expect(jobStore[FETCH_JOBS]).toHaveBeenCalled()
   })
 
   it('displayes maximum of 10 jobs', async () => {
-    axios.get.mockResolvedValue({ data: Array(15).fill({}) })
-
     renderJobListings(createRoute({ page: '1' }))
+    const jobsStore = useJobsStore()
+
+    // Simulates end result of an API call / Fetch operation.
+    // This appraoch of accessing and updating store directly without using Pinia Actions should be allowd only in unit tests
+    // In this test we do not test component interaction with Pinia store and its Actions or fetching logic details
+    // We test component responsibility of displaying 10 jobs per page if there is N jobs in the jobs array
+    jobsStore.jobs = Array(15).fill({})
 
     const jobListings = await screen.findAllByRole('listitem')
     expect(jobListings).toHaveLength(10)
@@ -65,11 +76,13 @@ describe('JobListings', () => {
 
   describe('when a user is on the first page', () => {
     it('does not show link to previous page', async () => {
-      axios.get.mockResolvedValue({ data: Array(15).fill({}) })
       const queryParams = { page: '1' }
       const $route = createRoute(queryParams)
 
       renderJobListings($route)
+
+      const jobsStore = useJobsStore()
+      jobsStore.jobs = Array(15).fill({})
 
       // Additional check that the UI is up to date and fetch async operation is done and component re-rendered
       await screen.findAllByRole('listitem')
@@ -82,11 +95,13 @@ describe('JobListings', () => {
     })
 
     it('shows link to the next page', async () => {
-      axios.get.mockResolvedValue({ data: Array(12).fill({}) })
       const queryParams = { page: '1' }
       const $route = createRoute(queryParams)
 
       renderJobListings($route)
+
+      const jobsStore = useJobsStore()
+      jobsStore.jobs = Array(15).fill({})
 
       // Additional check to await component to re-render
       await screen.findAllByRole('listitem')
@@ -101,11 +116,13 @@ describe('JobListings', () => {
 
   describe('when the user is on the last page', () => {
     it('does not show the link to the next page', async () => {
-      axios.get.mockResolvedValue({ data: Array(12).fill({}) })
       const queryParams = { page: '2' }
       const $route = createRoute(queryParams)
 
       renderJobListings($route)
+
+      const jobsStore = useJobsStore()
+      jobsStore.jobs = Array(15).fill({})
 
       await screen.findAllByRole('listitem')
 
@@ -117,11 +134,13 @@ describe('JobListings', () => {
     })
 
     it('show link to the previous page', async () => {
-      axios.get.mockResolvedValue({ data: Array(17).fill({}) })
       const queryParams = { page: '2' }
       const $route = createRoute(queryParams)
 
       renderJobListings($route)
+
+      const jobsStore = useJobsStore()
+      jobsStore.jobs = Array(15).fill({})
 
       await screen.findAllByRole('listitem')
 
