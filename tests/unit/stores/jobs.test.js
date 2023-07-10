@@ -17,10 +17,10 @@ describe('Jobs global state', () => {
 })
 
 describe('FETCH_JOBS', () => {
-  it('makes API request and stores received jobs', () => {
+  it('makes API request and stores received jobs', async () => {
     axios.get.mockResolvedValue({ data: ['job 1', 'job 2'] })
     const store = useJobsStore()
-    store.FETCH_JOBS()
+    await store.FETCH_JOBS()
     expect(store.jobs).toEqual(['job 1', 'job 2'])
   })
 })
