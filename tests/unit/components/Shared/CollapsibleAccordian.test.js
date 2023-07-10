@@ -4,13 +4,22 @@ import userEvent from '@testing-library/user-event'
 import CollapsibleAccordion from '@/components/Shared/CollapsibleAccordion.vue'
 
 describe('CollapsibleAccordian', () => {
-  it('renders child content', async () => {
+  const renderCollapsibleAccordian = (config = {}) => {
     render(CollapsibleAccordion, {
       global: {
         stubs: {
           FontAwesomeIcon: true,
         },
       },
+      props: {
+        header: 'my category',
+      },
+      ...config,
+    })
+  }
+
+  it('renders child content', async () => {
+    renderCollapsibleAccordian({
       props: {
         header: 'my category',
       },
@@ -32,12 +41,7 @@ describe('CollapsibleAccordian', () => {
 
   describe('when parent does not provide custom child content', () => {
     it('renders default content', async () => {
-      render(CollapsibleAccordion, {
-        global: {
-          stubs: {
-            FontAwesomeIcon: true,
-          },
-        },
+      renderCollapsibleAccordian({
         props: {
           header: 'my category',
         },
