@@ -2,6 +2,7 @@ import { createPinia, setActivePinia } from 'pinia'
 import axios from 'axios'
 
 import { UNIQUE_ORGANIZATIONS, useJobsStore } from '@/stores/jobs'
+import { useUserStore } from '@/stores/user'
 
 vi.mock('axios')
 
@@ -40,5 +41,23 @@ describe('jobs getters', () => {
     const result = store[UNIQUE_ORGANIZATIONS]
 
     expect(result).toEqual(new Set(['google', 'amazon']))
+  })
+
+  describe('FILTERED_JOBS_BY_ORGANIZATIONS', () => {
+    it('identifies jobs that are associated with the given organizations', () => {
+      const jobsStore = useJobsStore()
+      jobsStore.jobs = [
+        { organization: 'amazon' },
+        { organization: 'google' },
+        { organization: 'microsoft' },
+      ]
+
+      const userStore = useUserStore()
+      userStore.slectedOrganizations = ['google', 'microsoft']
+
+      const result = jobsStore.FILTERED_JOBS_BY_ORGANIZATIONS
+
+      expect(result).toEqual([{ organization: 'google' }, { organization: 'microsoft' }])
+    })
   })
 })
