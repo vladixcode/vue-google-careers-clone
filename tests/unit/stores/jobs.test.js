@@ -1,7 +1,7 @@
 import { createPinia, setActivePinia } from 'pinia'
 import axios from 'axios'
 
-import { useJobsStore } from '@/stores/jobs'
+import { UNIQUE_ORGANIZATIONS, useJobsStore } from '@/stores/jobs'
 
 vi.mock('axios')
 
@@ -22,5 +22,23 @@ describe('FETCH_JOBS', () => {
     const store = useJobsStore()
     await store.FETCH_JOBS()
     expect(store.jobs).toEqual(['job 1', 'job 2'])
+  })
+})
+
+describe('jobs getters', () => {
+  it('finds unique organizations from list of jobs ', () => {
+    const store = useJobsStore()
+
+    // To mutate state we always use store actions
+    // In test ecosystem we go with the simplest approach that test needs
+    store.jobs = [
+      { organization: 'google' },
+      { organization: 'amazon' },
+      { organization: 'google' },
+    ]
+
+    const result = store[UNIQUE_ORGANIZATIONS]
+
+    expect(result).toEqual(new Set(['google', 'amazon']))
   })
 })
