@@ -21,6 +21,9 @@
 </template>
 
 <script>
+/**
+ * TODO: Fix data duplication for selectedOrganizations that now exist as local data in this component and in global state
+ */
 import { mapState, mapActions } from 'pinia'
 import { useJobsStore, UNIQUE_ORGANIZATIONS } from '@/stores/jobs'
 import { useUserStore, ADD_SELECTED_ORGANIZATIONS } from '@/stores/user'
