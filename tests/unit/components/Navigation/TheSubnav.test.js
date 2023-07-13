@@ -1,11 +1,18 @@
 import { render, screen } from '@testing-library/vue'
+import { createTestingPinia } from '@pinia/testing'
+import { nextTick } from 'vue'
 
 import TheSubnav from '@/components/Navigation/TheSubnav.vue'
+import { useJobsStore } from '@/stores/jobs'
 
 describe('TheSubnav', () => {
   const renderTheSubnav = (routeName) => {
+    const pinia = createTestingPinia()
+    const jobStore = useJobsStore()
+
     render(TheSubnav, {
       global: {
+        plugins: [pinia],
         mocks: {
           $route: {
             name: routeName,
@@ -16,22 +23,33 @@ describe('TheSubnav', () => {
         },
       },
     })
+
+    return { jobStore }
   }
   describe('when user is on jobs page', () => {
-    it('displays job count', () => {
-      renderTheSubnav('JobResults')
+    it('displays job count', async () => {
+      const routeName = 'JobResults'
+      const { jobStore } = renderTheSubnav(routeName)
+      const numberOfJobs = 12
+
+      jobStore.FILTERED_JOBS_BY_ORGANIZATIONS = Array(numberOfJobs).fill({})
+
+      await nextTick()
       // screen.debug()
-      const jobCount = screen.getByText('42')
+      const jobCount = screen.getByText(numberOfJobs)
       expect(jobCount).toBeInTheDocument()
     })
   })
 
   describe('when user is not on jobs page', () => {
     it('does NOT display job count', () => {
-      // The way to properly test this is to have router and to use the user click event etc
-      renderTheSubnav('Home')
+      const routeName = 'Home'
+      const { jobStore } = renderTheSubnav(routeName)
+      const numberOfJobs = 300
 
-      const jobCount = screen.queryByText('42')
+      jobStore.FILTERED_JOBS_BY_ORGANIZATIONS = Array(numberOfJobs).fill({})
+
+      const jobCount = screen.queryByText(numberOfJobs)
       expect(jobCount).not.toBeInTheDocument()
     })
   })
