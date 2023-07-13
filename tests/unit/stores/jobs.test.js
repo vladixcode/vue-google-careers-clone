@@ -59,5 +59,27 @@ describe('jobs getters', () => {
 
       expect(result).toEqual([{ organization: 'google' }, { organization: 'microsoft' }])
     })
+
+    describe('when the user has not selected any organization', () => {
+      it('returns all jobs', () => {
+        const jobsStore = useJobsStore()
+        jobsStore.jobs = [
+          { organization: 'amazon' },
+          { organization: 'google' },
+          { organization: 'microsoft' },
+        ]
+
+        const userStore = useUserStore()
+        userStore.slectedOrganizations = []
+
+        const result = jobsStore.FILTERED_JOBS_BY_ORGANIZATIONS
+
+        expect(result).toEqual([
+          { organization: 'amazon' },
+          { organization: 'google' },
+          { organization: 'microsoft' },
+        ])
+      })
+    })
   })
 })
