@@ -16,6 +16,11 @@ describe('user inital state', () => {
     const store = useUserStore()
     expect(store.slectedOrganizations).toEqual([])
   })
+
+  it('stores jobs types that the user would like to filter jobs by', () => {
+    const store = useUserStore()
+    expect(store.selectedJobTypes).toEqual([])
+  })
 })
 
 describe('user store actions', () => {
@@ -24,12 +29,20 @@ describe('user store actions', () => {
     store[LOGIN_USER]()
     expect(store.isLoggedIn).toBe(true)
   })
-})
 
-describe('ADD_SELECTED_ORGANIZATIONS', () => {
-  it('updates organizations the user has chosen to filter jobs by', () => {
-    const store = useUserStore()
-    store.ADD_SELECTED_ORGANIZATIONS(['org1', 'org2'])
-    expect(store.slectedOrganizations).toEqual(['org1', 'org2'])
+  describe('ADD_SELECTED_ORGANIZATIONS', () => {
+    it('updates organizations the user has chosen to filter jobs by', () => {
+      const store = useUserStore()
+      store.ADD_SELECTED_ORGANIZATIONS(['org1', 'org2'])
+      expect(store.slectedOrganizations).toEqual(['org1', 'org2'])
+    })
+  })
+
+  describe('ADD_SELECTED_JOB_TYPES', () => {
+    it('updates job types the user has chosen to filter jobs by', () => {
+      const store = useUserStore()
+      store.ADD_SELECTED_JOB_TYPES(['full-time', 'part-time'])
+      expect(store.selectedJobTypes).toEqual(['full-time', 'part-time'])
+    })
   })
 })
