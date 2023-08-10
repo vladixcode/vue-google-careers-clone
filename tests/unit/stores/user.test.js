@@ -14,7 +14,7 @@ describe('user inital state', () => {
 
   it('stores organizations that the user would like to filter jobs by', () => {
     const store = useUserStore()
-    expect(store.slectedOrganizations).toEqual([])
+    expect(store.selectedOrganizations).toEqual([])
   })
 
   it('stores jobs types that the user would like to filter jobs by', () => {
@@ -34,7 +34,7 @@ describe('user store actions', () => {
     it('updates organizations the user has chosen to filter jobs by', () => {
       const store = useUserStore()
       store.ADD_SELECTED_ORGANIZATIONS(['org1', 'org2'])
-      expect(store.slectedOrganizations).toEqual(['org1', 'org2'])
+      expect(store.selectedOrganizations).toEqual(['org1', 'org2'])
     })
   })
 

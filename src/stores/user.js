@@ -7,7 +7,7 @@ export const ADD_SELECTED_JOB_TYPES = 'ADD_SELECTED_JOB_TYPES'
 export const useUserStore = defineStore('user', {
   state: () => ({
     isLoggedIn: false,
-    slectedOrganizations: [],
+    selectedOrganizations: [],
     selectedJobTypes: [],
   }),
   actions: {
@@ -15,7 +15,7 @@ export const useUserStore = defineStore('user', {
       this.isLoggedIn = true
     },
     [ADD_SELECTED_ORGANIZATIONS](payload) {
-      this.slectedOrganizations = payload
+      this.selectedOrganizations = payload
     },
     [ADD_SELECTED_JOB_TYPES](payload) {
       this.selectedJobTypes = payload
