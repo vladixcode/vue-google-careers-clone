@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, toRefs } from 'vue'
 
 export default {
   name: 'ActionButton',
@@ -25,7 +25,9 @@ export default {
     },
   },
   setup(props) {
-    const buttonClass = computed(() => ({ [props.type]: true }))
+    const { type } = toRefs(props)
+
+    const buttonClass = computed(() => ({ [type.value]: true }))
 
     return {
       buttonClass,
