@@ -1,6 +1,8 @@
 import { render, screen } from '@testing-library/vue'
 import userEvent from '@testing-library/user-event'
 import { createTestingPinia } from '@pinia/testing'
+import { useRouter } from 'vue-router'
+vi.mock('vue-router')
 
 import JobFiltersSidebarJobTypesVue from '@/components/JobResults/JobFiltersSidebar/JobFiltersSidebarJobTypes.vue'
 import { useJobsStore, UNIQUE_JOB_TYPES } from '@/stores/jobs'
@@ -12,13 +14,13 @@ describe('JobFiltersSidebarJobTypes', () => {
     const pinia = createTestingPinia()
     const jobsStore = useJobsStore()
     const userStore = useUserStore()
-    const $router = { push: vi.fn() }
+
+    const push = vi.fn()
+
+    useRouter.mockReturnValue({ push })
 
     render(JobFiltersSidebarJobTypesVue, {
       global: {
-        mocks: {
-          $router,
-        },
         plugins: [pinia],
         stubs: {
           FontAwesomeIcon: true,
@@ -26,7 +28,7 @@ describe('JobFiltersSidebarJobTypes', () => {
       },
     })
 
-    return { jobsStore, userStore, $router }
+    return { jobsStore, userStore, push }
   }
   it('renders unique list of job types from jobs', async () => {
     const { jobsStore } = renderJobFiltersSidebarJobTypes()
@@ -70,7 +72,7 @@ describe('JobFiltersSidebarJobTypes', () => {
     })
 
     it('navigates user to job results page to see fresh batch of filtered jobs', async () => {
-      const { jobsStore, $router } = renderJobFiltersSidebarJobTypes()
+      const { jobsStore, push } = renderJobFiltersSidebarJobTypes()
 
       // Decouple fro mthe real store getter implementation
       jobsStore[UNIQUE_JOB_TYPES] = new Set(['full-time'])
@@ -87,7 +89,7 @@ describe('JobFiltersSidebarJobTypes', () => {
 
       await userEvent.click(fullTimeCheckbox)
 
-      expect($router.push).toHaveBeenCalledWith({ name: 'JobResults' })
+      expect(push).toHaveBeenCalledWith({ name: 'JobResults' })
     })
   })
 })

@@ -20,34 +20,28 @@
   </collapsible-accordion>
 </template>
 
-<script>
+<script setup>
 /**
  * TODO: Fix data duplication for JobFiltersSidebarJobTypes that now exist as local data in this component and in global state
  */
-import { mapState, mapActions } from 'pinia'
-import { useJobsStore, UNIQUE_JOB_TYPES } from '@/stores/jobs'
-import { useUserStore, ADD_SELECTED_JOB_TYPES } from '@/stores/user'
+import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
+
+import { useJobsStore } from '@/stores/jobs'
+import { useUserStore } from '@/stores/user'
 
 import CollapsibleAccordion from '@/components/Shared/CollapsibleAccordion.vue'
-export default {
-  name: 'JobFiltersSidebarJobTypes',
-  components: {
-    CollapsibleAccordion,
-  },
-  data() {
-    return {
-      selectedJobTypes: [],
-    }
-  },
-  computed: {
-    ...mapState(useJobsStore, [UNIQUE_JOB_TYPES]),
-  },
-  methods: {
-    ...mapActions(useUserStore, [ADD_SELECTED_JOB_TYPES]),
-    selectJobTypes() {
-      this[ADD_SELECTED_JOB_TYPES](this.selectedJobTypes)
-      this.$router.push({ name: 'JobResults' })
-    },
-  },
+
+const selectedJobTypes = ref([])
+
+const jobStore = useJobsStore()
+const UNIQUE_JOB_TYPES = computed(() => jobStore.UNIQUE_JOB_TYPES)
+
+const userStore = useUserStore()
+const router = useRouter()
+
+const selectJobTypes = () => {
+  userStore.ADD_SELECTED_JOB_TYPES(selectedJobTypes.value)
+  router.push({ name: 'JobResults' })
 }
 </script>

@@ -1,6 +1,8 @@
 import { render, screen } from '@testing-library/vue'
 import userEvent from '@testing-library/user-event'
 import { createTestingPinia } from '@pinia/testing'
+import { useRouter } from 'vue-router'
+vi.mock('vue-router')
 
 import JobFiltersSidebarOrganizationsVue from '@/components/JobResults/JobFiltersSidebar/JobFiltersSidebarOrganizations.vue'
 import { useJobsStore, UNIQUE_ORGANIZATIONS } from '@/stores/jobs'
@@ -12,13 +14,12 @@ describe('JobFiltersSidebarOrganizations', () => {
     const pinia = createTestingPinia()
     const jobsStore = useJobsStore()
     const userStore = useUserStore()
-    const $router = { push: vi.fn() }
+
+    const push = vi.fn()
+    useRouter.mockReturnValue({ push })
 
     render(JobFiltersSidebarOrganizationsVue, {
       global: {
-        mocks: {
-          $router,
-        },
         plugins: [pinia],
         stubs: {
           FontAwesomeIcon: true,
@@ -26,7 +27,7 @@ describe('JobFiltersSidebarOrganizations', () => {
       },
     })
 
-    return { jobsStore, userStore, $router }
+    return { jobsStore, userStore, push }
   }
   it('renders unique list of organizations from jobs', async () => {
     const { jobsStore } = renderJobFiltersSidebarOrganizations()
@@ -69,7 +70,7 @@ describe('JobFiltersSidebarOrganizations', () => {
     })
 
     it('navigates user to job results page to see fresh barch of filtered jobs', async () => {
-      const { jobsStore, $router } = renderJobFiltersSidebarOrganizations()
+      const { jobsStore, push } = renderJobFiltersSidebarOrganizations()
 
       // Decouple fro mthe real store getter implementation
       jobsStore[UNIQUE_ORGANIZATIONS] = new Set(['google'])
@@ -87,7 +88,7 @@ describe('JobFiltersSidebarOrganizations', () => {
       await userEvent.click(googleCheckbox)
 
       // check interaction with $router.push method
-      expect($router.push).toBeCalledWith({ name: 'JobResults' })
+      expect(push).toBeCalledWith({ name: 'JobResults' })
     })
   })
 })
