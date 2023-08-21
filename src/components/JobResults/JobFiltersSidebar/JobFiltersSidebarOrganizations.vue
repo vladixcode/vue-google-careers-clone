@@ -22,7 +22,10 @@
 
 <script setup>
 /**
- * TODO: Fix data duplication for selectedOrganizations that now exist as local data in this component and in global state
+ * TODO: Remove this component and its tests since it is no longer used
+ *
+ * There is more generic and reusable component
+ * tests/unit/components/JobResults/JobResultsSidebar/JobFiltersSidebarCheckboxGroup.test.js
  */
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
