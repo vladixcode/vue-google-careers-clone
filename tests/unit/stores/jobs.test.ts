@@ -30,6 +30,20 @@ describe('FETCH_JOBS', () => {
 })
 
 describe('jobs getters', () => {
+  const createJob = (job: Partial<Job> = {}): Job => ({
+    id: 1,
+    title: 'Angular Developer',
+    organization: 'Vue and Me',
+    degree: "Master's",
+    jobType: 'Intern',
+    locations: ['Lisbon'],
+    minimumQualifications: ['Mesh granular deliverables'],
+    preferredQualifications: ['Mesh wireless metrics'],
+    description: ['Away someone forget effect wait land'],
+    dateAdded: '2021-07-04',
+    ...job,
+  })
+
   describe('UNIQUE_ORGANIZATIONS', () => {
     it('finds unique organizations from list of jobs ', () => {
       const store = useJobsStore()
@@ -37,10 +51,10 @@ describe('jobs getters', () => {
       // To mutate state we always use store actions
       // In test ecosystem we go with the simplest approach that test needs
       store.jobs = [
-        { organization: 'google' },
-        { organization: 'amazon' },
-        { organization: 'google' },
-      ] as Job[]
+        createJob({ organization: 'google' }),
+        createJob({ organization: 'amazon' }),
+        createJob({ organization: 'google' }),
+      ]
 
       const result = store[UNIQUE_ORGANIZATIONS]
 
@@ -53,10 +67,10 @@ describe('jobs getters', () => {
       const store = useJobsStore()
 
       store.jobs = [
-        { jobType: 'full-time' },
-        { jobType: 'part-time' },
-        { jobType: 'full-time' },
-      ] as Job[]
+        createJob({ jobType: 'full-time' }),
+        createJob({ jobType: 'part-time' }),
+        createJob({ jobType: 'full-time' }),
+      ]
 
       const result = store[UNIQUE_JOB_TYPES]
 
@@ -71,7 +85,7 @@ describe('jobs getters', () => {
         userStore.selectedOrganizations = []
 
         const store = useJobsStore()
-        const job = { organization: 'google' } as Job
+        const job = createJob({ organization: 'google' })
 
         const result = store.INCLUDE_JOB_BY_ORGANIZATION(job)
 
@@ -83,7 +97,7 @@ describe('jobs getters', () => {
         userStore.selectedOrganizations = ['google', 'microsoft']
 
         const store = useJobsStore()
-        const job = { organization: 'google' } as Job
+        const job = createJob({ organization: 'google' })
 
         const result = store.INCLUDE_JOB_BY_ORGANIZATION(job)
 
@@ -99,7 +113,7 @@ describe('jobs getters', () => {
         userStore.selectedJobTypes = []
 
         const store = useJobsStore()
-        const job = { jobType: 'full-time' } as Job
+        const job = createJob({ jobType: 'full-time' })
 
         const result = store.INCLUDE_JOB_BY_JOB_TYPE(job)
 
@@ -111,7 +125,7 @@ describe('jobs getters', () => {
         userStore.selectedJobTypes = ['full-time', 'part-time']
 
         const store = useJobsStore()
-        const job = { jobType: 'part-time' } as Job
+        const job = createJob({ jobType: 'part-time' })
 
         const result = store.INCLUDE_JOB_BY_JOB_TYPE(job)
 
