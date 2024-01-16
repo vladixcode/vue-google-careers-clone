@@ -15,7 +15,9 @@ describe('TextInput', () => {
 
     await userEvent.type(input, typeString)
 
-    const [message] = wrapper.emitted()['update:modelValue'][typeString.length - 1]
-    expect(message).toBe('Vue')
+    // const [message]: string = wrapper.emitted()['update:modelValue'][typeString.length - 1]
+    const messages = wrapper.emitted()['update:modelValue']
+    // expect(message).toBe('Vue')
+    expect(messages).toEqual([['V'], ['Vu'], ['Vue']])
   })
 })

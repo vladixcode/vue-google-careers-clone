@@ -1,8 +1,11 @@
+import type { Mock } from 'vitest'
 import { render, screen } from '@testing-library/vue'
 import userEvent from '@testing-library/user-event'
 import { createTestingPinia } from '@pinia/testing'
 import { useRouter } from 'vue-router'
+
 vi.mock('vue-router')
+const useRouterMock = useRouter as Mock
 
 import JobFiltersSidebarOrganizationsVue from '@/components/JobResults/JobFiltersSidebar/JobFiltersSidebarOrganizations.vue'
 import { useJobsStore, UNIQUE_ORGANIZATIONS } from '@/stores/jobs'
@@ -16,7 +19,7 @@ describe('JobFiltersSidebarOrganizations', () => {
     const userStore = useUserStore()
 
     const push = vi.fn()
-    useRouter.mockReturnValue({ push })
+    useRouterMock.mockReturnValue({ push })
 
     render(JobFiltersSidebarOrganizationsVue, {
       global: {
@@ -33,6 +36,7 @@ describe('JobFiltersSidebarOrganizations', () => {
     const { jobsStore } = renderJobFiltersSidebarOrganizations()
 
     // Decouple fro mthe real store getter implementation
+    // @ts-expect-error
     jobsStore[UNIQUE_ORGANIZATIONS] = new Set(['google', 'amazon'])
 
     const button = screen.getByRole('button', {
@@ -52,6 +56,7 @@ describe('JobFiltersSidebarOrganizations', () => {
       const { jobsStore, userStore } = renderJobFiltersSidebarOrganizations()
 
       // Decouple fro mthe real store getter implementation
+      // @ts-expect-error
       jobsStore[UNIQUE_ORGANIZATIONS] = new Set(['google', 'amazon'])
 
       const button = screen.getByRole('button', {
@@ -73,6 +78,7 @@ describe('JobFiltersSidebarOrganizations', () => {
       const { jobsStore, push } = renderJobFiltersSidebarOrganizations()
 
       // Decouple fro mthe real store getter implementation
+      // @ts-expect-error
       jobsStore[UNIQUE_ORGANIZATIONS] = new Set(['google'])
 
       const button = screen.getByRole('button', {

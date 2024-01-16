@@ -1,26 +1,37 @@
+import type { Mock } from 'vitest'
 import { render, screen } from '@testing-library/vue'
 import userEvent from '@testing-library/user-event'
 import { createTestingPinia } from '@pinia/testing'
 import { useRouter } from 'vue-router'
+
 vi.mock('vue-router')
+const useRouterMock = useRouter as Mock
 
 import JobFiltersSidebarCheckboxGroup from '@/components/JobResults/JobFiltersSidebar/JobFiltersSidebarCheckboxGroup.vue'
 
 describe('JobFiltersSidebarCheckboxGroup', () => {
-  const createProps = (props = {}) => ({
+  interface JobFiltersSidebarCheckboxGroupProps {
+    header: string
+    uniqueValues: Set<string>
+    action: Mock
+  }
+
+  const createProps = (
+    props: Partial<JobFiltersSidebarCheckboxGroupProps> = {},
+  ): JobFiltersSidebarCheckboxGroupProps => ({
     header: 'Some header',
     uniqueValues: new Set(['ValueA', 'ValueB']),
     action: vi.fn(),
     ...props,
   })
 
-  const renderJobFiltersSidebarCheckboxGroup = (props) => {
+  const renderJobFiltersSidebarCheckboxGroup = (props: JobFiltersSidebarCheckboxGroupProps) => {
     // Setup testing environment
     const pinia = createTestingPinia()
 
     const push = vi.fn()
 
-    useRouter.mockReturnValue({ push })
+    useRouterMock.mockReturnValue({ push })
 
     render(JobFiltersSidebarCheckboxGroup, {
       props: {
