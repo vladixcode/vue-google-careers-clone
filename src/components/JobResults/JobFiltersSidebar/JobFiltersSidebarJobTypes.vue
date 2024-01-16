@@ -20,7 +20,7 @@
   </collapsible-accordion>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 /**
  * TODO: Remove this component and its tests since it is no longer used
  *

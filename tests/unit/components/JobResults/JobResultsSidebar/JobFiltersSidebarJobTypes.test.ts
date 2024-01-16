@@ -1,8 +1,11 @@
+import type { Mock } from 'vitest'
 import { render, screen } from '@testing-library/vue'
 import userEvent from '@testing-library/user-event'
 import { createTestingPinia } from '@pinia/testing'
 import { useRouter } from 'vue-router'
+
 vi.mock('vue-router')
+const useRouterMock = useRouter as Mock
 
 import JobFiltersSidebarJobTypesVue from '@/components/JobResults/JobFiltersSidebar/JobFiltersSidebarJobTypes.vue'
 import { useJobsStore, UNIQUE_JOB_TYPES } from '@/stores/jobs'
@@ -17,7 +20,7 @@ describe('JobFiltersSidebarJobTypes', () => {
 
     const push = vi.fn()
 
-    useRouter.mockReturnValue({ push })
+    useRouterMock.mockReturnValue({ push })
 
     render(JobFiltersSidebarJobTypesVue, {
       global: {
@@ -34,6 +37,7 @@ describe('JobFiltersSidebarJobTypes', () => {
     const { jobsStore } = renderJobFiltersSidebarJobTypes()
 
     // Decouple fro mthe real store getter implementation
+    // @ts-expect-error
     jobsStore[UNIQUE_JOB_TYPES] = new Set(['full-time', 'part-time'])
 
     const button = screen.getByRole('button', {
@@ -52,6 +56,7 @@ describe('JobFiltersSidebarJobTypes', () => {
       const { jobsStore, userStore } = renderJobFiltersSidebarJobTypes()
 
       // Decouple fro mthe real store getter implementation
+      // @ts-expect-error
       jobsStore[UNIQUE_JOB_TYPES] = new Set(['full-time', 'part-time'])
 
       const button = screen.getByRole('button', {
@@ -75,6 +80,7 @@ describe('JobFiltersSidebarJobTypes', () => {
       const { jobsStore, push } = renderJobFiltersSidebarJobTypes()
 
       // Decouple fro mthe real store getter implementation
+      // @ts-expect-error
       jobsStore[UNIQUE_JOB_TYPES] = new Set(['full-time'])
 
       const button = screen.getByRole('button', {

@@ -1,3 +1,4 @@
+import type { Mock } from 'vitest'
 import { render, screen } from '@testing-library/vue'
 import { createTestingPinia } from '@pinia/testing'
 import { nextTick } from 'vue'
@@ -7,6 +8,8 @@ vi.mock('vue-router')
 
 import TheSubnav from '@/components/Navigation/TheSubnav.vue'
 import { useJobsStore } from '@/stores/jobs'
+
+const useRouteMock = useRoute as Mock
 
 describe('TheSubnav', () => {
   const renderTheSubnav = () => {
@@ -26,10 +29,11 @@ describe('TheSubnav', () => {
   }
   describe('when user is on jobs page', () => {
     it('displays job count', async () => {
-      useRoute.mockReturnValue({ name: 'JobResults' })
+      useRouteMock.mockReturnValue({ name: 'JobResults' })
       const { jobStore } = renderTheSubnav()
       const numberOfJobs = 12
 
+      // @ts-expect-error: Getter is read-only
       jobStore.FILTERED_JOBS = Array(numberOfJobs).fill({})
 
       await nextTick()
@@ -41,10 +45,11 @@ describe('TheSubnav', () => {
 
   describe('when user is not on jobs page', () => {
     it('does NOT display job count', async () => {
-      useRoute.mockReturnValue({ name: 'Home' })
+      useRouteMock.mockReturnValue({ name: 'Home' })
       const { jobStore } = renderTheSubnav()
       const numberOfJobs = 300
 
+      // @ts-expect-error: Getter is read-only
       jobStore.FILTERED_JOBS = Array(numberOfJobs).fill({})
 
       await nextTick()

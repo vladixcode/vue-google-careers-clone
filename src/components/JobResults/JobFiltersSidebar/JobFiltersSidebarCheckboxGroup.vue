@@ -20,7 +20,7 @@
   </collapsible-accordion>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 /**
  * TODO: Fix data duplication for JobFiltersSidebarJobTypes that now exist as local data in this component and in global state
  */
@@ -35,7 +35,7 @@ const props = defineProps({
     required: true,
   },
   uniqueValues: {
-    type: Set,
+    type: Set<string>,
     required: true,
   },
   action: {
@@ -44,7 +44,7 @@ const props = defineProps({
   },
 })
 
-const selectedValues = ref([])
+const selectedValues = ref<string[]>([])
 const router = useRouter()
 
 const selectedValue = () => {

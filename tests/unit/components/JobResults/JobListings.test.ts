@@ -1,8 +1,12 @@
+import type { Mock } from 'vitest'
 import { render, screen } from '@testing-library/vue'
 import { RouterLinkStub } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import { useRoute } from 'vue-router'
+
 vi.mock('vue-router')
+const useRouteMock = useRoute as Mock
+
 // import axios from 'axios'
 
 // vi.mock('axios')
@@ -18,6 +22,8 @@ describe('JobListings', () => {
   const renderJobListings = () => {
     const pinia = createTestingPinia()
     const jobsStore = useJobsStore()
+
+    // @ts-expect-error
     jobsStore.FILTERED_JOBS = Array(15).fill({})
 
     render(JobsListings, {
@@ -33,7 +39,7 @@ describe('JobListings', () => {
   }
 
   it('fetches jobs', () => {
-    useRoute.mockReturnValue({ query: {} })
+    useRouteMock.mockReturnValue({ query: {} })
 
     const { jobsStore } = renderJobListings()
 
@@ -41,7 +47,7 @@ describe('JobListings', () => {
   })
 
   it('displayes maximum of 10 jobs', async () => {
-    useRoute.mockReturnValue({ query: { page: '1' } })
+    useRouteMock.mockReturnValue({ query: { page: '1' } })
     // renderJobListings(createRoute({ page: '1' }))
     const { jobsStore } = renderJobListings()
 
@@ -49,6 +55,8 @@ describe('JobListings', () => {
     // This appraoch of accessing and updating store directly without using Pinia Actions should be allowd only in unit tests
     // In this test we do not test component interaction with Pinia store and its Actions or fetching logic details
     // We test component responsibility of displaying 10 jobs per page if there is N jobs in the jobs array
+
+    // @ts-expect-error
     jobsStore.FILTERED_JOBS = Array(15).fill({})
 
     const jobListings = await screen.findAllByRole('listitem')
@@ -57,7 +65,7 @@ describe('JobListings', () => {
 
   describe('when params exclude page number', () => {
     it('displays page number 1', () => {
-      useRoute.mockReturnValue({ query: { page: undefined } }) // Compostion API
+      useRouteMock.mockReturnValue({ query: { page: undefined } }) // Compostion API
       // const queryParams = { page: undefined } // Options API
       // const $route = createRoute(queryParams)
 
@@ -69,7 +77,7 @@ describe('JobListings', () => {
 
   describe('when params include page number', () => {
     it('displays page number', () => {
-      useRoute.mockReturnValue({ query: { page: '3' } }) // Composition API
+      useRouteMock.mockReturnValue({ query: { page: '3' } }) // Composition API
       // const queryParams = { page: '3' }
       // const $route = createRoute(queryParams)
 
@@ -81,12 +89,13 @@ describe('JobListings', () => {
 
   describe('when a user is on the first page', () => {
     it('does not show link to previous page', async () => {
-      useRoute.mockReturnValue({ query: { page: '1' } }) // Composition API
+      useRouteMock.mockReturnValue({ query: { page: '1' } }) // Composition API
       // const queryParams = { page: '1' }
       // const $route = createRoute(queryParams)
 
       const { jobsStore } = renderJobListings()
 
+      // @ts-expect-error
       jobsStore.FILTERED_JOBS = Array(15).fill({})
 
       // Additional check that the UI is up to date and fetch async operation is done and component re-rendered
@@ -100,13 +109,15 @@ describe('JobListings', () => {
     })
 
     it('shows link to the next page', async () => {
-      useRoute.mockReturnValue({ query: { page: '1' } }) // Composition API
+      useRouteMock.mockReturnValue({ query: { page: '1' } }) // Composition API
       // const queryParams = { page: '1' }
       // const $route = createRoute(queryParams)
 
       renderJobListings()
 
       const jobsStore = useJobsStore()
+
+      // @ts-expect-error
       jobsStore.FILTERED_JOBS = Array(15).fill({})
 
       // Additional check to await component to re-render
@@ -122,12 +133,13 @@ describe('JobListings', () => {
 
   describe('when the user is on the last page', () => {
     it('does not show the link to the next page', async () => {
-      useRoute.mockReturnValue({ query: { page: '2' } }) // Composition API
+      useRouteMock.mockReturnValue({ query: { page: '2' } }) // Composition API
       // const queryParams = { page: '2' }
       // const $route = createRoute(queryParams)
 
       const { jobsStore } = renderJobListings()
 
+      // @ts-expect-error
       jobsStore.FILTERED_JOBS = Array(15).fill({})
 
       await screen.findAllByRole('listitem')
@@ -140,11 +152,13 @@ describe('JobListings', () => {
     })
 
     it('show link to the previous page', async () => {
-      useRoute.mockReturnValue({ query: { page: '2' } }) // Composition API
+      useRouteMock.mockReturnValue({ query: { page: '2' } }) // Composition API
       // const queryParams = { page: '2' }
       // const $route = createRoute(queryParams)
 
       const { jobsStore } = renderJobListings()
+
+      // @ts-expect-error
       jobsStore.FILTERED_JOBS = Array(15).fill({})
 
       await screen.findAllByRole('listitem')

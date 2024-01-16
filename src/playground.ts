@@ -65,4 +65,4 @@ const state2: Partial<Job> = {
 //   somethingelse: 'something',
 // }
 
-console.log(state1, state2)
+// console.log(state1, state2)
