@@ -1,3 +1,4 @@
+import type { Mock } from 'vitest'
 import { render, screen } from '@testing-library/vue'
 import userEvent from '@testing-library/user-event'
 import { RouterLinkStub } from '@vue/test-utils'
@@ -10,13 +11,15 @@ vi.mock('vue-router')
 import MainNav from '@/components/Navigation/MainNav.vue'
 import { useUserStore } from '@/stores/user'
 
+const useRouteMock = useRoute as Mock
+
 describe('MainNav', () => {
   const renderMainNav = () => {
     // Use store without mocking its state and actions if you prefer integration tests to test component & store
     // const pinia = createTestingPinia({ stubActions: false }) // Real world implementation with no mocks of store actions etc
     const pinia = createTestingPinia() // Default and prefered way with mocking
 
-    useRoute.mockReturnValue({
+    useRouteMock.mockReturnValue({
       name: 'Home',
     })
 
