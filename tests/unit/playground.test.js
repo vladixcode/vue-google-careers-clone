@@ -1,7 +1,7 @@
 // * Thise functions are set globally
-// import { describe, it, expect } from 'vitest'
+import { describe, it, expect } from 'vitest'
 
-import { evenOrOdd } from '@/playground.js'
+import { evenOrOdd } from '@/playground.ts'
 
 describe('basic math', () => {
   it('adds two numbers', () => {
