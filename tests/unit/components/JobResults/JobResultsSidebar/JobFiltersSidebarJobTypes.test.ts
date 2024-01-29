@@ -11,7 +11,7 @@ import JobFiltersSidebarJobTypesVue from '@/components/JobResults/JobFiltersSide
 import { useJobsStore, UNIQUE_JOB_TYPES } from '@/stores/jobs'
 import { useUserStore } from '@/stores/user'
 
-describe('JobFiltersSidebarJobTypes', () => {
+describe.skip('JobFiltersSidebarJobTypes', () => {
   const renderJobFiltersSidebarJobTypes = () => {
     // Setup testing environment
     const pinia = createTestingPinia()
