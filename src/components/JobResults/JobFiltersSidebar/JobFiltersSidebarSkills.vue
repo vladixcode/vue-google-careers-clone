@@ -1,7 +1,7 @@
 <template>
   <div class="mt-2">
     <input
-      v-model="skillSearchTerm"
+      v-model.lazy.trim="skillSearchTerm"
       type="text"
       placeholder="Computer programming"
       class="h-12 w-full rounded border border-brand-gray-1 p-3 text-base shadow-gray"
