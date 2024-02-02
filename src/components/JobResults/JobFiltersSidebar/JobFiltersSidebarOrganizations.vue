@@ -1,50 +1,18 @@
 <template>
-  <collapsible-accordion header="Organizations">
-    <div class="md-5">
-      <fieldset>
-        <ul class="flex flex-row flex-wrap">
-          <li v-for="organization in UNIQUE_ORGANIZATIONS" :key="organization" class="h-8 w-1/2">
-            <input
-              :id="organization"
-              v-model="selectedOrganizations"
-              :value="organization"
-              type="checkbox"
-              class="mr-3"
-              @change="selectOrganization"
-            />
-            <label :for="organization">{{ organization }}</label>
-          </li>
-        </ul>
-      </fieldset>
-    </div>
-  </collapsible-accordion>
+  <job-filters-sidebar-checkbox-group
+    :unique-values="UNIQUE_ORGANIZATIONS"
+    :action="userStore.ADD_SELECTED_ORGANIZATIONS"
+  />
 </template>
 
 <script lang="ts" setup>
-/**
- * TODO: Remove this component and its tests since it is no longer used
- *
- * There is more generic and reusable component
- * tests/unit/components/JobResults/JobResultsSidebar/JobFiltersSidebarCheckboxGroup.test.js
- */
-import { computed, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed } from 'vue'
+import JobFiltersSidebarCheckboxGroup from './JobFiltersSidebarCheckboxGroup.vue'
 
-import { useJobsStore } from '@/stores/jobs'
 import { useUserStore } from '@/stores/user'
-
-import CollapsibleAccordion from '@/components/Shared/CollapsibleAccordion.vue'
-
-const selectedOrganizations = ref([])
-
-const jobsStore = useJobsStore()
-const UNIQUE_ORGANIZATIONS = computed(() => jobsStore.UNIQUE_ORGANIZATIONS)
-
-const router = useRouter()
 const userStore = useUserStore()
 
-const selectOrganization = () => {
-  userStore.ADD_SELECTED_ORGANIZATIONS(selectedOrganizations.value)
-  router.push({ name: 'JobResults' })
-}
+import { useJobsStore } from '@/stores/jobs'
+const jobsStore = useJobsStore()
+const UNIQUE_ORGANIZATIONS = computed(() => jobsStore.UNIQUE_ORGANIZATIONS)
 </script>
