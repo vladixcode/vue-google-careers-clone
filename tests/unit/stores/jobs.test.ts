@@ -148,4 +148,45 @@ describe('jobs getters', () => {
       })
     })
   })
+
+  describe('INCLUDE_JOB_BY_SKILL', () => {
+    describe("when the user doesn't enter search term", () => {
+      it('includes a job', () => {
+        const userStore = useUserStore()
+        userStore.skillsSearchTerm = ''
+
+        const jobStore = useJobsStore()
+        const job = createJob({ title: 'Vue developer' })
+
+        const result = jobStore.INCLUDE_JOB_BY_SKILL(job)
+
+        expect(result).toBe(true)
+      })
+    })
+    describe('when the user enter search term', () => {
+      it("identifies if the job matches user's skill", () => {
+        const userStore = useUserStore()
+        userStore.skillsSearchTerm = 'vue'
+
+        const jobStore = useJobsStore()
+        const job = createJob({ title: 'Vue developer' })
+
+        const result = jobStore.INCLUDE_JOB_BY_SKILL(job)
+
+        expect(result).toBe(true)
+      })
+
+      it('handles inconsistent character casing', () => {
+        const userStore = useUserStore()
+        userStore.skillsSearchTerm = 'vUE dEv'
+
+        const jobStore = useJobsStore()
+        const job = createJob({ title: 'Vue developer' })
+
+        const result = jobStore.INCLUDE_JOB_BY_SKILL(job)
+
+        expect(result).toBe(true)
+      })
+    })
+  })
 })

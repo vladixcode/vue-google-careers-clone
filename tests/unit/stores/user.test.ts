@@ -26,6 +26,11 @@ describe('user inital state', () => {
     const store = useUserStore()
     expect(store.selectedDegrees).toEqual([])
   })
+
+  it("store's user's search term for skills and qualifications", () => {
+    const store = useUserStore()
+    expect(store.skillsSearchTerm).toBe('')
+  })
 })
 
 describe('user store actions', () => {
@@ -56,6 +61,15 @@ describe('user store actions', () => {
       const store = useUserStore()
       store.ADD_SELECTED_DEGREES(['degree 1', 'degree 2'])
       expect(store.selectedDegrees).toEqual(['degree 1', 'degree 2'])
+    })
+  })
+
+  describe('UPDATE_SKILLS_SEARCH_TERM', () => {
+    it('receives search term for skills the user has entered ', () => {
+      const store = useUserStore()
+      store.skillsSearchTerm = ''
+      store.UPDATE_SKILLS_SEARCH_TERM('javascript developer')
+      expect(store.skillsSearchTerm).toBe('javascript developer')
     })
   })
 
