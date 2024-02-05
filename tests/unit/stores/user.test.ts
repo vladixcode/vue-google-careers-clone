@@ -26,6 +26,11 @@ describe('user inital state', () => {
     const store = useUserStore()
     expect(store.selectedDegrees).toEqual([])
   })
+
+  it("store's user's search term for skills and qualifications", () => {
+    const store = useUserStore()
+    expect(store.skillsSearchTerm).toBe('')
+  })
 })
 
 describe('user store actions', () => {
@@ -59,6 +64,15 @@ describe('user store actions', () => {
     })
   })
 
+  describe('UPDATE_SKILLS_SEARCH_TERM', () => {
+    it('receives search term for skills the user has entered ', () => {
+      const store = useUserStore()
+      store.skillsSearchTerm = ''
+      store.UPDATE_SKILLS_SEARCH_TERM('javascript developer')
+      expect(store.skillsSearchTerm).toBe('javascript developer')
+    })
+  })
+
   describe('CLEAR_USER_JOB_FILTER_SELECTIONS', () => {
     it('removes all job filters that user has chosen', () => {
       const store = useUserStore()
@@ -66,12 +80,14 @@ describe('user store actions', () => {
       store.selectedDegrees = ['degree 1']
       store.selectedJobTypes = ['job type 1']
       store.selectedOrganizations = ['organization 1']
+      store.skillsSearchTerm = 'vue dev'
 
       store.CLEAR_USER_JOB_FILTER_SELECTIONS()
 
       expect(store.selectedDegrees).toEqual([])
       expect(store.selectedJobTypes).toEqual([])
       expect(store.selectedOrganizations).toEqual([])
+      expect(store.skillsSearchTerm).toBe('')
     })
   })
 })
