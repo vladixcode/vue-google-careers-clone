@@ -80,12 +80,14 @@ describe('user store actions', () => {
       store.selectedDegrees = ['degree 1']
       store.selectedJobTypes = ['job type 1']
       store.selectedOrganizations = ['organization 1']
+      store.skillsSearchTerm = 'vue dev'
 
       store.CLEAR_USER_JOB_FILTER_SELECTIONS()
 
       expect(store.selectedDegrees).toEqual([])
       expect(store.selectedJobTypes).toEqual([])
       expect(store.selectedOrganizations).toEqual([])
+      expect(store.skillsSearchTerm).toBe('')
     })
   })
 })
